@@ -1,0 +1,11 @@
+all: clean debuggerdetector
+
+debuggerdetector:
+	make -C utils -f Makefile64
+	cl /MT /EHs- /EHa- /wd4530 /DTARGET_WINDOWS /DBIGARRAY_MULTIPLIER=1 /D_CRT_SECURE_NO_DEPRECATE /D_SECURE_SCL=0 /nologo /Gy /DTARGET_IA32E /DHOST_IA32E /I../../../source/include/pin /I../../../source/include/pin/gen /I../../../extras/components/include /I../../../extras/xed-intel64/include /I../../../source/tools/InstLib /Icryptopp /I. /O2  /c /Foobj-ia64/debuggerdetector.obj debuggerdetector.cpp
+	link /DLL /EXPORT:main /NODEFAULTLIB /NOLOGO /INCREMENTAL:NO /MACHINE:x64 /ENTRY:Ptrace_DllMainCRTStartup /BASE:0x55000000 /OPT:REF  /out:obj-ia64/debuggerdetector.dll obj-ia64/debuggerdetector.obj  /LIBPATH:../../../intel64/lib /LIBPATH:../../../intel64/lib-ext  /LIBPATH:utils /LIBPATH:./cryptopp/x64/Output/Release/ /LIBPATH:../../../extras/xed-intel64/lib pin.lib libxed.lib libcpmt.lib libcmt.lib pinvm.lib kernel32.lib ntdll-64.lib utils64.lib cryptlib.lib advapi32.lib
+
+clean:
+	make -C utils clean
+	rm -rf obj-ia64
+	mkdir obj-ia64

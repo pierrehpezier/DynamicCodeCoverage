@@ -1,0 +1,13 @@
+
+all: clean utils
+
+utils:
+	cl /c /EHsc utils.cpp /I.. /DBUILD_UTIL /Fo:utils64.obj
+	lib utils64.obj
+
+clean:
+	rm -rf *obj *lib *exe
+
+test:
+	cl /c /EHsc test.cpp /I..
+	link  test64.obj utils64.lib ..\cryptopp\x64\Output\Release\cryptlib.lib
